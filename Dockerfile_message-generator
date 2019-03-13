@@ -1,0 +1,12 @@
+FROM gradle:5.2.1-jdk11 as build
+
+COPY --chown=gradle:gradle message-generator /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle bootJar
+
+FROM adoptopenjdk/openjdk11:latest as runtime
+RUN mkdir /opt/app
+COPY --from=build /home/gradle/src/build/libs/*.jar /opt/app/app.jar
+RUN ls /opt/app
+CMD ["java", "-jar", "/opt/app/app.jar"]
+

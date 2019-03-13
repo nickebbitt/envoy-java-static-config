@@ -1,0 +1,15 @@
+version: '3'
+services:
+  greeter:
+    build:
+      context: .
+      dockerfile: Dockerfile_greeter
+    ports:
+     - "9000:8080"
+  message-generator:
+    build: 
+      context: .
+      dockerfile: Dockerfile_message-generator
+    ports:
+     - "9001:8080"
+
