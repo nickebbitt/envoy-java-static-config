@@ -1,5 +1,6 @@
-version: '3'
+version: '2'
 services:
+
   front-envoy:
     build:
       context: .
@@ -14,11 +15,13 @@ services:
     ports:
       - "8000:80"
       - "8001:8001"
-  
+
   service1:
     build:
       context: .
-      dockerfile: Dockerfile_greeter
+      dockerfile: Dockerfile-service
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
     networks:
       envoymesh:
         aliases:
@@ -31,7 +34,9 @@ services:
   service2:
     build:
       context: .
-      dockerfile: Dockerfile_message-generator
+      dockerfile: Dockerfile-service
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
     networks:
       envoymesh:
         aliases:
@@ -39,7 +44,21 @@ services:
     environment:
       - SERVICE_NAME=2
     expose:
-      - "80"        
+      - "80"
 
+  service3:
+    build:
+      context: .
+      dockerfile: Dockerfile-service
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
+    networks:
+      envoymesh:
+        aliases:
+          - service3
+    environment:
+      - SERVICE_NAME=3
+    expose:
+      - "80"
 networks:
   envoymesh: {}

@@ -14,9 +14,10 @@ public class GreeterController {
         this.restTemplate = new RestTemplate();
     }
 
-    @GetMapping("/greet")
+    @GetMapping
     public String greet() {
-        final ResponseEntity<String> response = restTemplate.getForEntity("http://message-generator:8080/message", String.class);
+        System.out.println("Request received");
+        final ResponseEntity<String> response = restTemplate.getForEntity("http://service2:8080/message", String.class);
         return "Hello " + response.getBody();
     }
 
